@@ -1,0 +1,180 @@
+﻿<!doctype html>
+<html>
+<head>
+<title>Taula periòdica - Eines 2012-13</title>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+<style type="text/css">
+table {
+  width:100%;
+}
+.id, .nom {
+  display:block;
+}
+td {
+  width:7.14%;
+  padding:5px 2px;
+  transition:background 0.5s;
+  -webkit-transition:background 0.5s;
+  -moz-transition:background 0.5s;
+}
+.full {
+  border:1px solid lightgray;
+}
+input {
+  width:100%;
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
+  text-align:center;
+  margin:5px 0px;
+}
+.id {
+  width:80%;
+  margin:0 auto;
+}
+.nom {
+  line-height:150%;
+}
+#botonera button {
+  width:100px;
+}
+#botonera {
+  text-align:center;
+  margin:5px auto;
+  display:inline;
+  width:300px;
+}
+</style>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="/">Eines 2012-13</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="">
+            <a href="/taula/">Taula periòdica</a>
+          </li>
+          <li class="">
+            <a href="/alemany/">Verbs d'alemany</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="botonera" class="btn-group" style="margin-top:50px;">
+<button id="corregeix" class="btn">Corregeix</button>
+<button id="solucions" class="btn">Solucions</button>
+<button id="recarrega" class="btn">Recarrega</button>
+</div>
+<table id="taula">
+
+</table>
+<script type="text/javascript">
+(function () {
+
+var taula, div = document.getElementById("taula"), corregeix = document.getElementById("corregeix"), solucions = document.getElementById("solucions"), recarrega = document.getElementById("recarrega");
+
+corregeix.addEventListener('click', function () {
+  for (var i=0; i<taula.length; i++) {
+    var row = taula[i];
+    for (var j=0; j<row.length; j++) {
+      if (!row[j].buit) row[j].correct();
+    }
+  }
+});
+
+solucions.addEventListener('click', function () {
+  for (var i=0; i<taula.length; i++) {
+    var row = taula[i];
+    for (var j=0; j<row.length; j++) {
+      if (!row[j].buit) row[j].soluciona();
+    }
+  }
+});
+
+recarrega.addEventListener('click', function () {
+  load();
+});
+
+var e = function (a, b) {
+  this.buit = false;
+  this.element = document.createElement("td");
+  this.id = document.createElement("input");
+  this.id.className = "id";
+  this.id.maxLength = "2";
+  this.nom = document.createElement("input");
+  this.nom.className = "nom";
+  this.element.appendChild(this.id);
+  this.element.appendChild(this.nom);
+  this.element.className = "full";
+  this.a = a;
+  this.b = b;
+};
+
+e.prototype.correct = function () {
+  var ok = (this.id.value == this.a) && (this.nom.value == this.b);
+  if (!ok) {
+    this.element.style.background = "crimson";
+  } else if (this.id.disabled && this.nom.disabled) {
+    
+  } else {
+    this.element.style.background = "mediumseagreen";
+  }
+}
+e.prototype.soluciona = function () {
+  var ok = (this.id.value == this.a) && (this.nom.value == this.b);
+  if (ok && !this.id.disabled && !this.nom.disabled) {
+    this.element.style.background = "mediumseagreen";
+  } else {
+    this.element.style.background = "palegoldenrod";
+    this.nom.disabled = true;
+    this.id.disabled = true;
+    this.nom.value = this.b;
+    this.id.value = this.a;
+  }
+
+}
+
+var tmp = function () {
+  this.buit = true;
+  this.element = document.createElement("td");
+  this.element.className = "empty";
+};
+
+var b = (function () { return new tmp() });
+
+var buit = null;
+
+function load () {
+
+   taula = [
+[new e("H", "Hidrogen"), b(), b(), b(), b(), b(), b(), b(), b(), b(), b(), b(), b(), new e("He","Heli")],
+[new e("Li", "Liti"), new e("Be", "Beril·li"), b(), b(), b(), b(), b(), b(), new e("B","Bor"), new e("C","Carboni"), new e("N","Nitrogen"), new e("O","Oxigen"), new e("F","Fluor"), new e("Ne","Neó")],
+[new e("Na", "Sodi"), new e("Mg","Magnesi"), b(), b(), b(), b(), b(), b(), new e("Al","Alumini"), new e("Si","Silici"), new e("P","Fòsfor"), new e("S","Sofre"), new e("Cl","Clor"), new e("Ar","Argó")],
+[new e("K", "Potassi"), new e("Ca","Calci"), b(), new e("Fe","Ferro"), new e("Co","Cobalt"), new e("Ni","Níquel"), new e("Cu","Coure"), new e("Zn","Zinc"), new e("Ga","Gal·li"), new e("Ge","Germani"), new e("As","Arsènic"), new e("Se","Seleni"), new e("Br","Brom"), new e("Kr","Criptó")],
+[new e("Rb", "Rubidi"), new e("Sr","Estronci"), b(), b(), b(), new e("Pd","Pal·ladi"), new e("Ag","Plata"), new e("Cd","Cadmi"), new e("In","Indi"), new e("Sn","Estany"), new e("Sb","Antimoni"), new e("Te","Tel·luri"), new e("I","Iode"), new e("Xe","Xenó")],
+[new e("Cs", "Cesi"), new e("Ba","Bari"), b(), b(), b(), new e("Pt","Platí"), new e("Au","Or"), new e("Hg","Mercuri"), new e("Tl","Tal·li"), new e("Pb","Plom"), new e("Bi","Bismut"), new e("Po","Poloni"), new e("At","Àstat"), new e("Rn","Radó")],
+[new e("Fr", "Franci"), new e("Ra","Radi")]
+
+
+  ];
+  div.innerHTML = "";
+
+  for (var i=0; i<taula.length; i++) {
+    var row = taula[i];
+    var tr = document.createElement("tr");
+    for (var j=0; j<row.length; j++) {
+      tr.appendChild(row[j].element);
+    }
+    div.appendChild(tr);
+  }
+
+}
+load();
+
+})();
+</script>
+</body>
+</html>

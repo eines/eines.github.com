@@ -1,0 +1,178 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Verbs d'alemany - Eines 2012-13</title>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+<script type="text/javascript">
+function makelists() {
+ CAPCALERA = ['Infinitiu','Partizip II','Traducció'];
+ REGULARS = [['reparieren','repariert','arreglar'],['notieren','notiert','notar'],['telefonieren','telefoniert','telefonar'],['studieren','studiert','estudiar'],['organizieren','organiziert','organitzar'],['reservieren','reserviert','reservar'],['fotografieren','fotografiert','fotografiar'],['packen','gepackt','empaquetar'],['hören','gehört','escoltar'],['arbeiten','gearbeitet','treballar'],['leben','gelebt','viure'],['(sich) setzen','gesetzt',"asseure's"],['üben','geübt','practicar'],['wanten','gewantet','voler'],['ordnen','geordnet','ordenar'],['planen','geplant','planejar'],['suchen','gesucht','buscar'],['(es) regnen','geregnet','ploure'],['dauern','gedauert','durar'],['anschauen','angeschaut','vigilar'],['haben','gehabt','tenir'],['sammeln','gesammelt','col·leccionar'],['abholen','abgeholt','recollir'],['spielen','gespielt','jugar'],['kaufen','gekauft','comprar'],['machen','gemacht','fer'],['müssen','gemusst','obligació (interna)'],['können','gekonnt','poder (físic)'],['mögen','gemogt','agradar'],['dürfen','gedurft','poder'],['söllen','gesollt','obligació (externa)'],['wollen','gewollt','voler'],['tanzen','getanzt','ballar'],['joggen','gejoggt','córrer'],['campen','gecampt','acampar'],['angeln','geangelt','pescar'],['surfen','gesurft','surfejar'],['rette','gerettet','ajudar'],['segeln','gesegelt','navegar']];
+ IRREGULARS = [['beginnen','begonnen','començar'],['bleiben','geblieben','estar'],['bringen','gebracht','portar'],['mitbringen','mitgebracht','portar'],['denken','gedacht','pensar'],['essen','gegessen','menjar'],['fahren','gefahren','viatjar'],['anfangen','angefangen','començar'],['finden','gefunden','buscar'],['geben','gegeben','donar'],['gehen','gegangen','anar'],['gewinnen','gewonnen','guanyar'],['hängen','gehangen','penjar'],['heissen','geheissen','anomenar-se'],['helfen','geholfen','ajudar'],['kennen','gekannt','saber'],['kommen','gekommt','venir'],['einladen','eingeladen','convidar'],['laufen','gelaufen','córrer'],['lesen','gelesen','llegir'],['liegen','gelegen','estar (horitzontal)'],['nehmen','genommen','prendre'],['reiten','geritten','anar a cavall'],['ringen','gerungen','lluitar'],['anrufen','angerufen','trucar'],['schlafen','geschlafen','dormir'],['schreiben','geschreiben','escriure'],['schwimmen','geschwommen','nedar'],['sehen','gesehen','veure'],['sein','gewesen','ser'],['singen','gesungen','cantar'],['sitzen','gesessen','seure'],['sprechen','gesprochen','parlar'],['springen','gesprungen','saltar'],['stehen','gestanden','estar (vertical)'],['aufstehen','aufgestanden','despertar-se'],['tragen','getragen','portar roba'],['treffen','getroffen','quedar'],['trinken','getrunken','beure'],['tun','getan','fer'],['vergessen','vergessen','oblidar'],['verlieren','verloren','perdre'],['waschen','gewaschen','rentar'],['wissen','gewusst','saber']];
+ TOTS = [];
+ for(var i=0;i<IRREGULARS.length;i++) {
+  TOTS[TOTS.length] = IRREGULARS[i];
+ }
+ for(var i=0;i<REGULARS.length;i++) {
+  TOTS[TOTS.length] = REGULARS[i];
+ }
+}
+
+function aleallista(ll) {  
+  var i = ll.length;
+  if ( i == 0 ) { return false; }
+  while ( --i ) {
+     var j = Math.floor( Math.random() * ( i + 1 ) );
+     var tempi = ll[i];
+     var tempj = ll[j];
+     ll[i] = tempj;
+     ll[j] = tempi;
+   }
+  return ll;
+}
+
+function stat() {
+  return [document.getElementById("r").checked, document.getElementById("i").checked]
+}
+
+function tots(cls) {
+  var ret = [];
+  var t = document.getElementsByTagName("*");
+  for(var i=0;i<t.length;i++) {
+    if (t[i].className == cls) {
+      ret[ret.length] = t[i];
+    }
+  }
+  return ret;
+}
+randint = function (range) {
+  var range = range || 101;
+  return Math.floor(Math.random()*range);
+};
+
+randseq = function (len, range) {
+  var len = len || 3;
+  var range = range || 10;
+  var str = "";
+  for (var i=0; i<len; i++) {
+    str += randint(range);
+  };
+  return str;
+};
+
+function fes(q) {
+ var llista;
+ if(q[0] && q[1]) {
+  llista = TOTS;
+ } else {
+ if(q[0]) {llista=REGULARS;}
+ else if(q[1]) {llista=IRREGULARS;}
+ else { document.getElementById("contingut").innerHTML='<p style="padding:20px;">Potser que seleccionem alguna opció, no, graciós/graciosa?</p>'; return; }
+ }
+ llista = aleallista(llista);
+ document.getElementById("contingut").innerHTML = "<tr><th>"+CAPCALERA[0]+"</th><th>"+CAPCALERA[1]+"</th><th>"+CAPCALERA[2]+"</th></tr>";
+ for(var x=0;x<llista.length;x++) {
+   var conegut = Math.floor(Math.random()*(llista[x].length));
+   var el = document.getElementById("contingut");
+   var id = randseq();
+   var TXT = '<tr id="'+id+'">';
+   for(y=0;y<llista[x].length;y++) {
+     if (conegut !== y) { TXT += '<td style="width:33%;height:35px;border:1px solid gray;"><input class="imp" type="text" style="width:100%;" data-valor="'+llista[x][y]+'"></td>'; }
+     else { TXT += '<td style="width:33%;height:35px;border:1px solid gray;">'+llista[x][y]+'</td>'; }
+   }
+   TXT += "</tr>";
+   document.getElementById("contingut").innerHTML += TXT;
+ }
+}
+
+function corregeix() {
+  var t = tots("imp");
+  for(x=0;x<t.length;x++) {
+    if (t[x].value === t[x].getAttribute("data-valor")) {
+      t[x].style.background = "lightgreen";
+    } else {
+      t[x].style.background = "Salmon";
+    }
+  }
+}
+
+function solucions() {
+  var t = tots("imp");
+  for(x=0;x<t.length;x++) {
+    if (t[x].value === t[x].getAttribute("data-valor")) {
+      t[x].style.background = "lightgreen";
+    } else {
+      t[x].value = t[x].getAttribute("data-valor");
+      t[x].style.background = "LightGoldenrodYellow";
+    }
+  }
+}
+
+function carrega () {
+   var qfer = stat();
+   fes(qfer);
+   document.getElementById("contingut").style.opacity = 0;
+   var inter = setInterval(function () {
+     var op = document.getElementById("contingut").style.opacity;
+     if (op>=100) { clearInterval(inter); }
+     else {
+       document.getElementById("contingut").style.opacity = parseFloat(document.getElementById("contingut").style.opacity)+5/100;
+     }
+   },50);
+}
+window.onload = function () {
+  makelists();
+  carrega()
+  document.getElementById("r").onclick = carrega;
+  document.getElementById("i").onclick = carrega;
+  //alert(aleallista(TOTS));
+};
+</script>
+<style type="text/css">
+td { background:lightsteelblue; }
+th { background:steelblue; }
+input {
+  height:auto !important;
+}
+</style>
+</head>
+<body style="width:98%;font-family:sans-serif,Arial;">
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="/">Eines 2012-13</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="">
+            <a href="/taula/">Taula periòdica</a>
+          </li>
+          <li class="">
+            <a href="/alemany/">Verbs d'alemany</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<center style="margin-top:50px;">
+<div style="width:80%;">
+<div id="header" style="text-align:left;width:100%;background:lightsteelblue;border:1px solid steelblue;margin-bottom:50px;">
+<div style="padding-left:100px;height:50px;">
+<table style="width:100%;">
+<tr>
+<td><input type="checkbox" checked="checked" id="r">Regulars<br/>
+<input type="checkbox" checked="checked" id="i">Irregulars</td>
+<td style="width:50px;text-align:right;"><input onClick="carrega();" type="button" value="Recarrega" style="height:35px;font-size:120%;"></td>
+<td style="width:100px;text-align:right;"><input onClick="solucions();" type="button" value="Solucions" style="height:35px;font-size:120%;"></td>
+<td style="width:100px;text-align:right;"><input onClick="corregeix();" type="button" value="Corregeix" style="height:35px;font-size:120%;"></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div style="width:60%;">
+<table id="contingut" style="width:100%;border:1px solid gray;border-collapse:collapse;">
+</table>
+</div>
+</center>
+</body>
+</html>
