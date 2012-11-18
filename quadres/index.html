@@ -1,0 +1,78 @@
+<!doctype html>
+<html style="padding:0px; margin:0px;">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="arr.js"></script>
+</head>
+<body style="padding:0px; margin:0px;overflow:hidden;font-family:sans-serif">
+<div style="position:absolute;left:50%;top:50%;" id="abs">
+<center style="position:relative;">
+<img id="imatge" style="max-height:100%;max-width:100%;padding:0px;margin:0px;">
+<div id="d" style="background:rgba(70,70,70,0.8); color:white; position:absolute; bottom:15px; left:50%; width:500px;margin-left:-250px;padding:10px 5px;text-align:center;"></div>
+</center>
+</div>
+<div style="position:absolute; top:5px; width:200px; text-align:center;left:50%; margin-left:-100px;">
+<button id="a">anterior</button><button id="s">següent</button>
+</div>
+<div style="position:fixed;bottom:5px;right:5px;text-align:center;">
+Amplada (en px):<br>
+<input type="text" id="amp" value="600">
+</div>
+<script type="text/javascript">
+(function () {
+function fisherYates ( myArray ) {
+  var i = myArray.length;
+  if ( i == 0 ) return false;
+  while ( --i ) {
+     var j = Math.floor( Math.random() * ( i + 1 ) );
+     var tempi = myArray[i];
+     var tempj = myArray[j];
+     myArray[i] = tempj;
+     myArray[j] = tempi;
+   }
+  return myArray;
+}
+  var data = fisherYates(data1.concat(data2, data3, data4));
+  console.log(data.length);
+  var imatge = document.getElementById("imatge");
+  var desc = document.getElementById("d");
+  var ab = document.getElementById("abs");
+  var amp = document.getElementById("amp");
+  var cur = 0;
+  
+  function nova() {
+    desc.style.width = this.offsetWidth-10+"px";
+    desc.style.marginLeft = "-"+(this.offsetWidth/2)+"px";
+    ab.style.marginLeft = "-"+ab.offsetWidth/2+"px";
+    ab.style.marginTop = "-"+ab.offsetHeight/2+"px";
+  }
+
+  imatge.onload = nova.bind(imatge);
+  
+  function show(i) {
+    imatge.src = data[i][0].replace("1000px", amp.value+"px");
+    desc.innerHTML = data[i][1];
+  }
+  show(cur);
+
+  document.getElementById("a").onclick = function () {
+    cur--;
+    if (cur < 0) cur = data.length-1;
+    show(cur);
+  }
+  document.getElementById("s").onclick = function () {
+    cur++;
+    if (cur == data.length) cur = 0;
+    show(cur);
+  }
+
+  function a() {
+    imatge.style.maxHeight = innerHeight+"px";
+    imatge.style.maxWidth = innerWidth+"px";
+    nova.bind(imatge)();
+  }
+  window.onresize = a; a();
+})();
+</script>
+</body>
+</html>
